@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import { createClient } from 'redis';
 import userRoutes from './routes/user.js';
-
+import { connectRabbitMQ } from './config/rabbitmq.js';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use('/api/v1', userRoutes);
+
 
 const redisurl=process.env.REDIS_URL ;
 
@@ -21,10 +24,13 @@ export const redisClient = createClient({
     url: redisurl,
 });
 
+
 const startServer = async () => {
     try {
         // Connect MongoDB
         await connectDB();
+        
+        connectRabbitMQ();
 
         // Connect Redis
         await redisClient.connect();
