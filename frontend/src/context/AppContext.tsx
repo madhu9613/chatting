@@ -47,7 +47,6 @@ interface AppContextType{
     chats:Chats[] | null;
     users:User[] | null;
     setChats:React.Dispatch<React.SetStateAction<Chats[] | null>>;
-
 }
 
 const AppContext=createContext<AppContextType |undefined>(undefined);
